@@ -26,6 +26,18 @@ func readFile(path string) []string {
 	return lines
 }
 
+func parseMult(mult string) int {
+	var num1 int
+	var num2 int
+
+	_, err := fmt.Sscanf(mult, "mul(%d,%d)", &num1, &num2)
+	if err != nil {
+		panic(err)
+	}
+
+	return num1 * num2
+}
+
 func part1() {
 	lines := readFile(FILE_PATH)
 
@@ -37,12 +49,7 @@ func part1() {
 		matches := regex.FindAllString(line, -1)
 
 		for _, match := range matches {
-			var num1 int
-			var num2 int
-
-			fmt.Sscanf(match, "mul(%d,%d)", &num1, &num2)
-
-			sum += num1 * num2
+			sum += parseMult(match)
 		}
 	}
 
@@ -68,15 +75,7 @@ func part2() {
 				active = false
 			default:
 				if active {
-					var num1 int
-					var num2 int
-
-					_, err := fmt.Sscanf(match, "mul(%d,%d)", &num1, &num2)
-					if err != nil {
-						panic(err)
-					}
-
-					sum += num1 * num2
+					sum += parseMult(match)
 				}
 			}
 		}
